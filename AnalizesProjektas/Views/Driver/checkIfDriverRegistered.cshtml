@@ -1,0 +1,125 @@
+﻿@model AnalizesProjektas.Models.Shipment
+
+@{
+    ViewData["Title"] = "checkIfDriverRegistered";
+}
+
+<h2>checkIfDriverRegistered</h2>
+
+<div>
+    <h4>Shipment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierLink)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SupplierLink)
+        </dd>
+        <dd>
+            @if (Model.Products != null)
+            {
+                foreach (var item in Model.Products)
+                {
+                <dt>
+                    @Html.DisplayName("Pavadiniams")
+                </dt>
+                <dd>
+                    @Html.Display(item.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayName("Kiekis")
+                </dt>
+                <dd>
+                    @Html.Display(item.Amount.ToString())
+                </dd>
+                <dt>
+                    @Html.DisplayName("Svoris")
+                </dt>
+                <dd>
+                    @Html.Display(item.Weight.ToString())
+                </dd>
+                <dt>
+                    @Html.DisplayName("Tipas")
+                </dt>
+                <dd>
+                    @Html.Display(item.Type.ToString())
+                </dd>
+            }
+        }
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Busena)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Busena)
+            </dd>
+            @if (Model.supplier != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.supplier)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.supplier.ImonesPavadinimas)
+                </dd>
+            }
+            @if (Model.driver != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.driver)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.driver.Vardas)
+                </dd>
+            }
+        </dl>
+    </div>
+    @if (Model.driver == null)
+    {
+        <h4>Sign Document</h4>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="submitDriverForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="driver.Vardas" class="control-label"></label>
+                        <input asp-for="driver.Vardas" class="form-control" />
+                        <span asp-validation-for="driver.Vardas" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="driver.MasinosTipas" class="control-label"></label>
+                        <input asp-for="driver.MasinosTipas" class="form-control" />
+                        <span asp-validation-for="driver.MasinosTipas" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="driver.MasinosNr" class="control-label"></label>
+                        <input asp-for="driver.MasinosNr" class="form-control" />
+                        <span asp-validation-for="driver.MasinosNr" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="driver.MasinosModelis" class="control-label"></label>
+                        <input asp-for="driver.MasinosModelis" class="form-control" />
+                        <span asp-validation-for="driver.MasinosModelis" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="driver.MasinosNr" class="control-label"></label>
+                        <input asp-for="driver.MasinosNr" class="form-control" />
+                        <span asp-validation-for="driver.MasinosNr" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Sign" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+    }
