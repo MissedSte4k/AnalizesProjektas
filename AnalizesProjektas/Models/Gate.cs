@@ -9,7 +9,7 @@ namespace AnalizesProjektas.Models
     {
         public int GateId { get; set; }
         public string Vieta { get; set; }
-        public List<GateTransportType> TransportType { get; set; }
+        public virtual List<GateTransportType> TransportType { get; set; }
         public WareHouse WareHouse { get; set; }
     }
 }

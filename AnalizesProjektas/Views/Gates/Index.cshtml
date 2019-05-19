@@ -34,11 +34,10 @@
                 @Html.DisplayFor(modelItem => item.WareHouse.InternalAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TransportType)
+                @Html.DisplayFor(modelItem => item.TransportType.FirstOrDefault().PriimamoMasinosTipas)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.GateId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GateId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.GateId">Delete</a>
             </td>
         </tr>

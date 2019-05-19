@@ -21,7 +21,12 @@ namespace AnalizesProjektas.Controllers
         // GET: Gates
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Gate.ToListAsync());
+            var gates = await _context.Gate.Include(x => x.WareHouse).ToListAsync();
+            foreach (var gate in gates)
+            {
+                _context.Entry(gate).Collection(x => x.TransportType).Load();
+            }
+            return View(gates);
         }
 
         // GET: Gates/Details/5
@@ -45,7 +50,7 @@ namespace AnalizesProjektas.Controllers
         // GET: Gates/Create
         public IActionResult Create()
         {
-            ViewBag.Warehouses = new List<WareHouse> { new WareHouse { InternalAddress = "Some Address" } };
+            ViewBag.Warehouses = _context.WareHouse.ToList();
             return View();
         }
 
@@ -54,17 +59,13 @@ namespace AnalizesProjektas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GateId,Vieta,WareHouse")] Gate gate,[Bind("TransportTypes")] List<int> transportTypes)
+        public async Task<IActionResult> Create([Bind("GateId,Vieta")] Gate gate,[Bind("TransportType")] int transportType,[Bind("WareHouse")] int wareHouse)
         {
             if (ModelState.IsValid)
             {
-                List<GateTransportType> gateTransports = new List<GateTransportType>();
-                foreach (var type in transportTypes)
-                {
-                    gateTransports.Add(new GateTransportType { PriimamoMasinosTipas = (CarType)type, Id = 0});
-                }
-
-                gate.TransportType = gateTransports;
+                gate.WareHouse = _context.WareHouse.Where(x => x.WareHouseId == wareHouse).FirstOrDefault();
+                gate.TransportType = new List<GateTransportType>();
+                gate.TransportType.Add(new GateTransportType { PriimamoMasinosTipas = (CarType)transportType });
                 _context.Add(gate);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -85,6 +86,7 @@ namespace AnalizesProjektas.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Warehouses = _context.WareHouse.ToList();
             return View(gate);
         }
 
@@ -93,17 +95,17 @@ namespace AnalizesProjektas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GateId,Vieta")] Gate gate)
+        public async Task<IActionResult> Edit(int id, [Bind("GateId,Vieta")] Gate gate, [Bind("TransportType")] int transportType, [Bind("WareHouse")] int wareHouse)
         {
-            if (id != gate.GateId)
-            {
-                return NotFound();
-            }
+            gate.GateId = id;
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    gate.WareHouse = _context.WareHouse.Where(x => x.WareHouseId == wareHouse).FirstOrDefault();
+                    gate.TransportType = new List<GateTransportType>();
+                    gate.TransportType.Add(new GateTransportType { PriimamoMasinosTipas = (CarType)transportType });
                     _context.Update(gate);
                     await _context.SaveChangesAsync();
                 }
