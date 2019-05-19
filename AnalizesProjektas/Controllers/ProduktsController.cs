@@ -5,26 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AnalizesProjektas.Models;
+using WebApplication2.Models;
 
-namespace AnalizesProjektas.Controllers
+namespace WebApplication2.Controllers
 {
-    public class GatesController : Controller
+    public class ProduktsController : Controller
     {
-        private readonly AnalizesProjektasContext _context;
+        private readonly WebApplication2Context _context;
 
-        public GatesController(AnalizesProjektasContext context)
+        public ProduktsController(WebApplication2Context context)
         {
             _context = context;
         }
 
-        // GET: Gates
+        // GET: Produkts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Gate.ToListAsync());
+            return View(await _context.Produkt.ToListAsync());
         }
 
-        // GET: Gates/Details/5
+        // GET: Produkts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,47 +32,39 @@ namespace AnalizesProjektas.Controllers
                 return NotFound();
             }
 
-            var gate = await _context.Gate
-                .FirstOrDefaultAsync(m => m.GateId == id);
-            if (gate == null)
+            var produkt = await _context.Produkt
+                .SingleOrDefaultAsync(m => m.ID == id);
+            if (produkt == null)
             {
                 return NotFound();
             }
 
-            return View(gate);
+            return View(produkt);
         }
 
-        // GET: Gates/Create
+        // GET: Produkts/Create
         public IActionResult Create()
         {
-            ViewBag.Warehouses = new List<WareHouse> { new WareHouse { InternalAddress = "Some Address" } };
             return View();
         }
 
-        // POST: Gates/Create
+        // POST: Produkts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GateId,Vieta,WareHouse")] Gate gate,[Bind("TransportTypes")] List<int> transportTypes)
+        public async Task<IActionResult> Create([Bind("ID,nmb,name")] Produkt produkt)
         {
             if (ModelState.IsValid)
             {
-                List<GateTransportType> gateTransports = new List<GateTransportType>();
-                foreach (var type in transportTypes)
-                {
-                    gateTransports.Add(new GateTransportType { PriimamoMasinosTipas = (CarType)type, Id = 0});
-                }
-
-                gate.TransportType = gateTransports;
-                _context.Add(gate);
+                _context.Add(produkt);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(gate);
+            return View(produkt);
         }
 
-        // GET: Gates/Edit/5
+        // GET: Produkts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,22 +72,22 @@ namespace AnalizesProjektas.Controllers
                 return NotFound();
             }
 
-            var gate = await _context.Gate.FindAsync(id);
-            if (gate == null)
+            var produkt = await _context.Produkt.SingleOrDefaultAsync(m => m.ID == id);
+            if (produkt == null)
             {
                 return NotFound();
             }
-            return View(gate);
+            return View(produkt);
         }
 
-        // POST: Gates/Edit/5
+        // POST: Produkts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GateId,Vieta")] Gate gate)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,nmb,name")] Produkt produkt)
         {
-            if (id != gate.GateId)
+            if (id != produkt.ID)
             {
                 return NotFound();
             }
@@ -104,12 +96,12 @@ namespace AnalizesProjektas.Controllers
             {
                 try
                 {
-                    _context.Update(gate);
+                    _context.Update(produkt);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GateExists(gate.GateId))
+                    if (!ProduktExists(produkt.ID))
                     {
                         return NotFound();
                     }
@@ -120,10 +112,10 @@ namespace AnalizesProjektas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(gate);
+            return View(produkt);
         }
 
-        // GET: Gates/Delete/5
+        // GET: Produkts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,30 +123,30 @@ namespace AnalizesProjektas.Controllers
                 return NotFound();
             }
 
-            var gate = await _context.Gate
-                .FirstOrDefaultAsync(m => m.GateId == id);
-            if (gate == null)
+            var produkt = await _context.Produkt
+                .SingleOrDefaultAsync(m => m.ID == id);
+            if (produkt == null)
             {
                 return NotFound();
             }
 
-            return View(gate);
+            return View(produkt);
         }
 
-        // POST: Gates/Delete/5
+        // POST: Produkts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var gate = await _context.Gate.FindAsync(id);
-            _context.Gate.Remove(gate);
+            var produkt = await _context.Produkt.SingleOrDefaultAsync(m => m.ID == id);
+            _context.Produkt.Remove(produkt);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GateExists(int id)
+        private bool ProduktExists(int id)
         {
-            return _context.Gate.Any(e => e.GateId == id);
+            return _context.Produkt.Any(e => e.ID == id);
         }
     }
 }

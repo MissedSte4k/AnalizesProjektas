@@ -1,16 +1,38 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AnalizesProjektas.Models
+namespace WebApplication2.Models
 {
     public class Worker
     {
-        public int WorkerId { get; set; }
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public WorkerGroup Type { get; set; }
-        public bool Deleted { get; set; }
+        public int ID { get; set; }
+
+        public String name { get; set; }
+
+        public String password { get; set; }
+
+        public WorkerGroup type { get; set; }
+
+        public Boolean deleted { get; set; }
+
+        public async Task<List<Worker>> getWorkers(WebApplication2Context _context)
+        {
+            return await _context.Worker.ToListAsync();
+        }
+        public void saveWorker(WebApplication2Context _context, Worker worker)
+        {
+            _context.Add(worker);
+        }
+        public void deleteWorker(WebApplication2Context _context, Worker worker)
+        {
+            _context.Worker.Remove(worker);
+        }
+        public void updateWorker(WebApplication2Context _context, Worker worker)
+        {
+            _context.Update(worker);
+        }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebApplication2.Models
 {
-    public enum ProductType
+    public class Produkt
     {
-        ProdA = 1,
-        ProdB = 2
+        public int ID { get; set; }
+        public int nmb { get; set; }
+        public string name { get; set; }
     }
 }

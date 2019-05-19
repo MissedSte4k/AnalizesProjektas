@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AnalizesProjektas.Models
+namespace WebApplication2.Models
 {
     public enum WorkerGroup
     {
-        Admin, 
-        Guard,
-        Manager
+        Admin = 0,
+        Manager = 1,
+        Guard = 2
     }
 }

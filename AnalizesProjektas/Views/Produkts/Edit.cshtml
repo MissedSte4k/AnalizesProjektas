@@ -1,4 +1,4 @@
-﻿@model AnalizesProjektas.Models.Gate
+﻿@model WebApplication2.Models.Produkt
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,17 +6,22 @@
 
 <h2>Edit</h2>
 
-<h4>Gate</h4>
+<h4>Produkt</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="GateId" />
+            <input type="hidden" asp-for="ID" />
             <div class="form-group">
-                <label asp-for="Vieta" class="control-label"></label>
-                <input asp-for="Vieta" class="form-control" />
-                <span asp-validation-for="Vieta" class="text-danger"></span>
+                <label asp-for="nmb" class="control-label"></label>
+                <input asp-for="nmb" class="form-control" />
+                <span asp-validation-for="nmb" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
