@@ -101,6 +101,48 @@ namespace AnalizesProjektas.Controllers
             return View(shipment.driver);
         }
 
+        // GET: Driver/Edit/5
+        public IActionResult RegisterArrival(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var shipment = _context.Shipments.Include(x => x.driver).Include(x => x.gateTime).FirstOrDefault(x => x.ShipmentId == id);
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+
+            var gate = _context.Gate.FirstOrDefault(x => x.TransportType.Where(y => y.PriimamoMasinosTipas == shipment.driver.MasinosTipas).Any());
+            ViewBag.gateTimes = _context.GateTime.Where(x => x.Gate.GateId == gate.GateId && !_context.Shipments.Any(y => y.gateTime.GateTimeId == x.GateTimeId)).OrderBy(x => x.Diena).GroupBy(x => x.Diena.Date);
+            return View(shipment);
+        }
+
+        // POST: Arrivals/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> RegisterArrival(int id, int gateTimeId)
+        {
+            var oldShipment = _context.Shipments.Include(x => x.driver).FirstOrDefault(x => x.ShipmentId == id);
+
+            if (oldShipment != null)
+            {
+                try
+                {
+                    oldShipment.gateTime = _context.GateTime.FirstOrDefault(x => x.GateTimeId == gateTimeId);
+                    _context.Update(oldShipment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                }
+            }
+            return RedirectToAction(nameof(RegisterArrival));
+        }
+
         // POST: Driver/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

@@ -21,8 +21,8 @@ namespace AnalizesProjektas.Controllers
         // GET: Arrivals
         public async Task<IActionResult> Index()
         {
-            var arrivals = await _context.Shipments.Include(x => x.driver).Include(x => x.gateTime).Include(x => x.gateTime.Gate).ToListAsync();
-            return View(await _context.Shipments.ToListAsync());
+            var arrivals = await _context.Shipments.Include(x => x.driver).Include(x => x.gateTime).Include(x => x.gateTime.Gate).Where(x => x.driver != null && x.gateTime != null).ToListAsync();
+            return View(arrivals);
         }
 
         // POST: Arrivals/Edit/5
