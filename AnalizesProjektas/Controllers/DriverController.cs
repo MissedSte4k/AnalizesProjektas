@@ -30,41 +30,57 @@ namespace AnalizesProjektas.Controllers
         // GET: Driver/Create
         public IActionResult checkIfDriverRegistered(int id)
         {
-            createDummy();
-            Shipment shipment = _context.Shipments.First();
-            bool state = shipment.checkState();
-            List<SendingProduct> prod = shipment.GetShippmentProducts();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var shipment = _context.Shipments.Find(id);
+            if (shipment == null)
+            {
+                var supplier = new Supplier() { ImonesPavadinimas = "kainava", SupplierId = 0, TelefonoNr = "8612312312", VardasPavarde = "Jonas Jonaitis" };
+                shipment = new Shipment() { ShipmentId = 0, CreationDate = DateTime.Now, SupplierLink = "sss", Busena = ShipmentStatus.PendingApproval, supplier = supplier, delays = null, gateTime = null, driver = null, Products = null };
+                _context.Shipments.Add(shipment);
+                _context.Supplier.Add(supplier);
+                _context.SaveChanges();
+            }
+            if (shipment == null)
+            {
+                return NotFound();
+            }
             return View(shipment);
         }
 
-        public void createDummy()
+        public IActionResult DriverForm(int? id)
         {
-            var prodd = new List<SendingProduct>();
-            SendingProduct a = new SendingProduct() { SendingProductId = 0, Name = "a", Amount = 3, Weight = 15, Type = ProductType.ProdA };
-            prodd.Add(a);
-
-            _context.SendingProducts.Add(a);
-            _context.SaveChanges();
-            var ship = new Shipment() { ShipmentId = 0, CreationDate = DateTime.Now, SupplierLink = "jop", Busena = ShipmentStatus.PendingApproval, delays = null, gateTime = null, driver = null, Products = prodd };
-            _context.Shipments.Add(ship);
-            _context.SaveChanges();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var shipment = _context.Shipments.Find(id);
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+            return View(shipment);
         }
-
 
         // POST: Driver/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShipmentId")] Shipment shipment)
+        public async Task<IActionResult> submitDriverForm([Bind("DriverID","Vardas", "MasinosTipas", "MasinosNr", "MasinosModelis", "MasinosBusena")] Driver driver, [Bind ("ShipmentId")] int  id)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(shipment);
+                driver.MasinosBusena = CarStatus.Išvykus;
+                _context.Add(driver);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("checkIfDriverRegistered", new { id = id });
             }
-            return View(shipment);
+            return View(driver);
         }
 
         // GET: Driver/Edit/5
