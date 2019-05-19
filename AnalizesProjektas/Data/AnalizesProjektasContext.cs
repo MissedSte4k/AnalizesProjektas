@@ -28,10 +28,6 @@ namespace AnalizesProjektas.Models
                 .HasMany(c => c.Gates)
                 .WithOne(e => e.WareHouse);
 
-            modelBuilder.Entity<Driver>()
-                .HasOne(c => c.Shipment)
-                .WithOne(e => e.driver)
-                .HasForeignKey<Shipment>(x => x.ShipmentId);
         }
 
         public DbSet<AnalizesProjektas.Models.Delay> Delay { get; set; }

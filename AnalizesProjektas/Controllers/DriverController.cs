@@ -40,7 +40,7 @@ namespace AnalizesProjektas.Controllers
             if (shipment == null)
             {
                 var supplier = new Supplier() { ImonesPavadinimas = "kainava", SupplierId = 0, TelefonoNr = "8612312312", VardasPavarde = "Jonas Jonaitis" };
-                shipment = new Shipment() { ShipmentId = 4, CreationDate = DateTime.Now, SupplierLink = "sss", Busena = ShipmentStatus.PendingApproval, supplier = supplier, delays = null, gateTime = null, driver = null, Products = null };
+                shipment = new Shipment() { ShipmentId = 0, CreationDate = DateTime.Now, SupplierLink = "sss", Busena = ShipmentStatus.PendingApproval, supplier = supplier, delays = null, gateTime = null, driver = null, Products = null };
                 _context.Shipments.Add(shipment);
                 _context.SaveChanges();
             }
@@ -70,7 +70,7 @@ namespace AnalizesProjektas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> submitDriverForm(int id,[Bind("DriverID","Vardas", "MasinosTipas", "MasinosNr", "MasinosModelis", "MasinosBusena")] Driver driver)
+        public IActionResult submitDriverForm(int id,[Bind("DriverId","Vardas", "MasinosTipas", "MasinosNr", "MasinosModelis", "MasinosBusena")] Driver driver)
         {
             id = 4;
             if (ModelState.IsValid)
@@ -128,7 +128,7 @@ namespace AnalizesProjektas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("checkIfDriverRegistered", new { id = shipment.driver.DriverId });
+                return RedirectToAction("checkIfDriverRegistered", new { id = shipment.ShipmentId });
             }
             return View(driver);
         }

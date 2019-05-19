@@ -25,10 +25,13 @@ namespace AnalizesProjektas.Controllers
                     return NotFound();
                 }
 
-            var shipment = _context.Shipments.Include(x => x.supplier).FirstOrDefault(x => x.ShipmentId == id);
+            var shipment = _context.Shipments.Include(x => x.supplier).Include(x => x.Products).FirstOrDefault(x => x.ShipmentId == id);
             if (shipment == null)
             {
-                shipment = new Shipment() { ShipmentId = 0, CreationDate = DateTime.Now, SupplierLink = "sss", Busena = ShipmentStatus.PendingApproval, supplier = null, delays = null, gateTime = null, driver = null, Products = null };
+                SendingProduct product = new SendingProduct() { Amount = 2, Name = "am", SendingProductId = 0, Type = ProductType.ProdA, Weight = 15 };
+                List<SendingProduct> prod = new List<SendingProduct>();
+                prod.Add(product);
+                shipment = new Shipment() { ShipmentId = 0, CreationDate = DateTime.Now, SupplierLink = "sss", Busena = ShipmentStatus.PendingApproval, supplier = null, delays = null, gateTime = null, driver = null, Products = prod };
                 _context.Shipments.Add(shipment);
                 _context.SaveChanges();
             }
@@ -36,22 +39,22 @@ namespace AnalizesProjektas.Controllers
                 {
                     return NotFound();
                 }
+            ViewBag.ShipmentId = shipment.ShipmentId;
             return View(shipment);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult submitSupplierForm([Bind("SupplierId", "ImonesPavadinimas", "TelefonoNr", "VardasPavarde", "Shipment")] Supplier supplier, int id)
+        public IActionResult submitSupplierForm([Bind("SupplierId", "ImonesPavadinimas", "TelefonoNr", "VardasPavarde", "Shipment")] Supplier supplier, [Bind("ShipmentId")] int shipmentId)
         {
-            id = 4;
             if (DataIsValid(supplier))
             {
-                Shipment shipment = _context.Shipments.Find(id);
+                Shipment shipment = _context.Shipments.Find(shipmentId);
                 shipment.supplier = supplier;
                 shipment.Busena = ShipmentStatus.CarrierApproved;
                 _context.SaveChanges();
-                return RedirectToAction("register", new { id = id });
+                return RedirectToAction("register", new { id = shipmentId });
             }
             return View(supplier);
         }

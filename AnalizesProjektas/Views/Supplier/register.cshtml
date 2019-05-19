@@ -22,35 +22,30 @@
         <dd>
             @if (Model.Products != null)
             {
-                foreach (var item in Model.Products)
+                @foreach (var item in Model.Products)
                 {
-                <dt>
-                    @Html.DisplayName("Pavadiniams")
-                </dt>
-                <dd>
-                    @Html.Display(item.Name)
-                </dd>
-                <dt>
-                    @Html.DisplayName("Kiekis")
-                </dt>
-                <dd>
-                    @Html.Display(item.Amount.ToString())
-                </dd>
-                <dt>
-                    @Html.DisplayName("Svoris")
-                </dt>
-                <dd>
-                    @Html.Display(item.Weight.ToString())
-                </dd>
-                <dt>
-                    @Html.DisplayName("Tipas")
-                </dt>
-                <dd>
-                    @Html.Display(item.Type.ToString())
-                </dd>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SendingProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+
+            </tr>
+                }
             }
-        }
-            </dd>
+            }
+        </dd>
             <dt>
                 @Html.DisplayNameFor(model => model.Busena)
             </dt>
@@ -100,8 +95,7 @@
                     <span asp-validation-for="supplier.VardasPavarde" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ShipmentId" class="control-label"></label>
-                    <input asp-for="ShipmentId"  class="form-control" disabled/>
+                    <input type="text" name="ShipmentId" style="display: none" value="@ViewBag.ShipmentId">
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Sign" class="btn btn-default" />
