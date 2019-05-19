@@ -26,7 +26,7 @@ namespace AnalizesProjektas.Models
         {
             modelBuilder.Entity<WareHouse>()
                 .HasMany(c => c.Gates)
-                .WithOne(e => e.WareHouse);
+                .WithOne(e => e.WareHouse).
         }
     }
 }

@@ -7,6 +7,7 @@ namespace AnalizesProjektas.Models
 {
     public enum CarStatus
     {
+        LaukiamaAtykimo,
         Atvykus,
         Išvykus,
         Sandėlyje,

@@ -9,5 +9,6 @@ namespace AnalizesProjektas.Models
     {
         public int GateTimeId { get; set; }
         public DateTime Diena { get; set; }
+        public Gate Gate { get; set; }
     }
 }

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<AnalizesProjektas.Models.Shipment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.driver.MasinosNr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.getArrival().Gate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.getArrival())
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.driver.AtvykimoLaikas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.driver.IsvykimoLaikas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Busena)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.driver.MasinosNr)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.ShipmentId)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.getArrival().Gate)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.getArrival())
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.driver.AtvykimoLaikas)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.driver.IsvykimoLaikas)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Busena)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

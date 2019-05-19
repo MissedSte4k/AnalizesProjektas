@@ -61,7 +61,7 @@ namespace AnalizesProjektas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("GateId,Vieta")] Gate gate,[Bind("TransportType")] int transportType,[Bind("WareHouse")] int wareHouse)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && gate.Vieta.Length != 0 && wareHouse != 0)
             {
                 gate.WareHouse = _context.WareHouse.Where(x => x.WareHouseId == wareHouse).FirstOrDefault();
                 gate.TransportType = new List<GateTransportType>();
@@ -95,7 +95,10 @@ namespace AnalizesProjektas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GateId,Vieta")] Gate gate, [Bind("TransportType")] int transportType, [Bind("WareHouse")] int wareHouse)
+        public async Task<IActionResult> Edit(int id, 
+            [Bind("GateId,Vieta")] Gate gate, 
+            [Bind("TransportType")] int transportType, 
+            [Bind("WareHouse")] int wareHouse)
         {
             gate.GateId = id;
 
