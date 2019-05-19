@@ -28,7 +28,7 @@ namespace AnalizesProjektas.Controllers
 
 
         // GET: Driver/Create
-        public IActionResult checkIfDriverRegistered(int id)
+        public IActionResult checkIfDriverRegistered(int? id)
         {
 
             if (id == null)
@@ -36,7 +36,7 @@ namespace AnalizesProjektas.Controllers
                 return NotFound();
             }
 
-            var shipment = _context.Shipments.Include(x=> x.driver).FirstOrDefault(x => x.ShipmentId == id);
+            var shipment = _context.Shipments.Include(x=> x.driver).Include(x => x.supplier).FirstOrDefault(x => x.ShipmentId == id);
             if (shipment == null)
             {
                 var supplier = new Supplier() { ImonesPavadinimas = "kainava", SupplierId = 0, TelefonoNr = "8612312312", VardasPavarde = "Jonas Jonaitis" };
@@ -62,6 +62,7 @@ namespace AnalizesProjektas.Controllers
             {
                 return NotFound();
             }
+            ViewBag.ShipmentId = shipment.ShipmentId;
             return View(shipment);
         }
 
@@ -70,20 +71,35 @@ namespace AnalizesProjektas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult submitDriverForm(int id,[Bind("DriverId","Vardas", "MasinosTipas", "MasinosNr", "MasinosModelis", "MasinosBusena")] Driver driver)
+        public IActionResult submitDriverForm(int ShipmentId, [Bind("DriverId","Vardas", "MasinosTipas", "MasinosNr", "MasinosModelis", "MasinosBusena")] Driver driver)
         {
-            id = 4;
             if (ModelState.IsValid)
             {
                 driver.MasinosBusena = CarStatus.Išvykus;
-                var shipment = _context.Shipments.Find(id);
+                var shipment = _context.Shipments.Find(ShipmentId);
                 shipment.driver = driver;
                 shipment.Busena = ShipmentStatus.CarrierApproved;
                 _context.SaveChanges();
-                return RedirectToAction("checkIfDriverRegistered", new { id = id });
+                return RedirectToAction("checkIfDriverRegistered", new { id = ShipmentId });
             }
             return View(driver);
         }
+
+        public IActionResult ReggisterDelay(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var shipment = _context.Shipments.Find(id);
+
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+            return View(shipment);
+        }
+
 
         // GET: Driver/Edit/5
         public IActionResult EditDriverForm(int? id)
@@ -175,34 +191,6 @@ namespace AnalizesProjektas.Controllers
             return View(driver);
         }
 
-        // GET: Driver/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var shipment = await _context.Shipments
-                .FirstOrDefaultAsync(m => m.ShipmentId == id);
-            if (shipment == null)
-            {
-                return NotFound();
-            }
-
-            return View(shipment);
-        }
-
-        // POST: Driver/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var shipment = await _context.Shipments.FindAsync(id);
-            _context.Shipments.Remove(shipment);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool ShipmentExists(int id)
         {
