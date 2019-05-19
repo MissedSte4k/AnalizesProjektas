@@ -31,6 +31,8 @@
     </dl>
 </div>
 <div>
+    @if (Model.supplier != null)
+    {
     @if (Model.driver == null)
     {
         <a asp-action="DriverForm" asp-route-id="@Model.ShipmentId">DriverForm</a>
@@ -83,5 +85,6 @@
     else
     {
         <a asp-action="ReggisterDelay" asp-route-id="@Model.ShipmentId">ReggisterDelay</a>
+    }
     }
 </div>
