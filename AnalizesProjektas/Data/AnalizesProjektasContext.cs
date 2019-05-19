@@ -28,5 +28,7 @@ namespace AnalizesProjektas.Models
                 .HasMany(c => c.Gates)
                 .WithOne(e => e.WareHouse);
         }
+
+        public DbSet<AnalizesProjektas.Models.Delay> Delay { get; set; }
     }
 }

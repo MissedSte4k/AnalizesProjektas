@@ -35,7 +35,47 @@
     {
         <a asp-action="DriverForm" asp-route-id="@Model.ShipmentId">DriverForm</a>
     }
-    else if (Model.gateTime == null)
+    else
+    {
+        <h4>Driver info</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.driver.MasinosBusena)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.driver.MasinosBusena)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.driver.MasinosModelis)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.driver.MasinosModelis)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.driver.MasinosNr)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.driver.MasinosNr)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.driver.MasinosTipas)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.driver.MasinosTipas)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.driver.Vardas)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.driver.Vardas)
+            </dd>
+        </dl>
+
+
+
+    }
+    @if (Model.gateTime == null)
     {
         <a asp-action="EditDriver" asp-route-id="@Model.ShipmentId">EditDriver</a>
         <a asp-action="ReggisterArrival" asp-route-id="@Model.ShipmentId">ReggisterArrival</a>
