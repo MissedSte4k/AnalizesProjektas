@@ -11,8 +11,6 @@ namespace AnalizesProjektas.Models
         public int DriverId { get; set; }
         public string Vardas { get; set; }
         public string MasinosNr { get; set; }
-        [Required]
-        public Shipment Shipment { get; set; }
         public string MasinosModelis { get; set; }
         public CarType MasinosTipas { get; set; }
         public CarStatus MasinosBusena { get; set; }

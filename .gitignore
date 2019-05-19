@@ -334,3 +334,5 @@ ASALocalRun/
 .localhistory/
 
 AnalizesProjektas/Migrations/
+
+AnalizesProjektas/appsettings\.json

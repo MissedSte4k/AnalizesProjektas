@@ -4,11 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Atvykstančios transporto priemonės</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -19,10 +16,10 @@
                 @Html.DisplayNameFor(model => model.ShipmentId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.getArrival().Gate)
+                @Html.DisplayNameFor(model => model.gateTime.Gate.Vieta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.getArrival())
+                @Html.DisplayNameFor(model => model.gateTime.Diena)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.driver.AtvykimoLaikas)
@@ -31,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.driver.IsvykimoLaikas)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Busena)
+                @Html.DisplayNameFor(model => model.driver.MasinosBusena)
             </th>
         </tr>
     </thead>
@@ -39,25 +36,45 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.driver.MasinosNr)
+                @Html.DisplayFor(modelItem => item.driver.MasinosNr)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.ShipmentId)
+                @Html.DisplayFor(modelItem => item.ShipmentId)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.getArrival().Gate)
+                @Html.DisplayFor(modelItem => item.gateTime.Gate.Vieta)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.getArrival())
+                @Html.DisplayFor(modelItem => item.gateTime.Diena)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.driver.AtvykimoLaikas)
+                @if (item.driver.AtvykimoLaikas == null)
+                {
+                <form action="/Arrivals/Edit/@item.ShipmentId" method="post">
+                    <input type="text" name="busena" style="display: none" value="1">
+                    <button type="submit">ATVYKO</button>
+                </form>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.driver.AtvykimoLaikas);
+                }
+             </td>
+            <td>
+                @if (item.driver.IsvykimoLaikas == null)
+                {
+                    <form action="/Arrivals/Edit/@item.ShipmentId" method="post">
+                        <input type="text" name="busena" style="display: none" value="2">
+                        <button type="submit">IŠVYKO</button>
+                    </form>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.driver.IsvykimoLaikas);
+                }
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.driver.IsvykimoLaikas)
-            </td>
-            <td>
-                @Html.DisplayNameFor(model => model.Busena)
+                @Html.DisplayFor(modelItem => item.driver.MasinosBusena)
             </td>
         </tr>
 }

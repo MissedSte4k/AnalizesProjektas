@@ -66,7 +66,19 @@ namespace AnalizesProjektas.Controllers
                 gate.WareHouse = _context.WareHouse.Where(x => x.WareHouseId == wareHouse).FirstOrDefault();
                 gate.TransportType = new List<GateTransportType>();
                 gate.TransportType.Add(new GateTransportType { PriimamoMasinosTipas = (CarType)transportType });
+               
+
                 _context.Add(gate);
+                await _context.SaveChangesAsync();
+
+                for (int d = 1; d <= 7; d++)
+                {
+                    for (int i = 8; i <= 17; i++)
+                    {
+                        _context.Add(new GateTime { Diena = DateTime.Today.AddDays(d).AddHours(i), Gate = gate});
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
