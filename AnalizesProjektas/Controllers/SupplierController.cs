@@ -20,45 +20,41 @@ namespace AnalizesProjektas.Controllers
 
         public IActionResult register(int id)
         {
-            createDummy();
-            Shipment shipment = _context.Shipments.First();
-            bool state = shipment.checkState();
-            List<SendingProduct> prod = shipment.GetShippmentProducts();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var shipment = _context.Shipments.Find(id);
+                if (shipment == null)
+                {
+                    return NotFound();
+                }
             return View(shipment);
         }
 
-        public void createDummy()
-        {
-            var prodd = new List<SendingProduct>();
-            SendingProduct a = new SendingProduct() { SendingProductId = 0, Name = "a", Amount = 3, Weight = 15, Type = ProductType.ProdA };
-            prodd.Add(a);
-
-            _context.SendingProducts.Add(a);
-            _context.SaveChanges();
-            var ship = new Shipment() { ShipmentId = 0, CreationDate = DateTime.Now, SupplierLink = "jop", Busena = ShipmentStatus.PendingApproval, delays = null, gateTime = null, driver = null, Products = prodd };
-            _context.Shipments.Add(ship);
-            _context.SaveChanges();
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult submitSupplierForm([Bind("SupplierId", "ImonesPavadinimas", "TelefonoNr", "VardasPavarde", "fkShipmentId")] Supplier supplier)
+        public IActionResult submitSupplierForm([Bind("SupplierId", "ImonesPavadinimas", "TelefonoNr", "VardasPavarde", "Shipment")] Supplier supplier, int id)
         {
             if (DataIsValid(supplier))
             {
+                Shipment shipment = _context.Shipments.Find(id);
+                shipment.supplier = supplier;
                 _context.Add(supplier);
-                Shipment shipment = _context.Shipments.First(e => e.ShipmentId == supplier.fkShipmentId);
+                
                 shipment.UpdateShipmentDB(supplier);
                 _context.SaveChanges();
                 return View(shipment);
             }
-            return register(supplier.fkShipmentId);
+            return register(id);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public bool DataIsValid(Supplier supplier)
         {
-            if (supplier.fkShipmentId != null && supplier.ImonesPavadinimas != "" && supplier.TelefonoNr != "" && supplier.VardasPavarde != "")
+            if ( supplier.ImonesPavadinimas != "" && supplier.TelefonoNr != "" && supplier.VardasPavarde != "")
             {
                 return true;
             }
