@@ -8,7 +8,6 @@ namespace AnalizesProjektas.Models
     public class Delay
     {
         public int DelayId { get; set; }
-        public DateTime VelavimoLaikas { get; set; }
-        public DateTime NaujasAtvykimoLaikas { get; set; }
+        public GateTime NaujasAtvykimoLaikas { get; set; }
     }
 }
