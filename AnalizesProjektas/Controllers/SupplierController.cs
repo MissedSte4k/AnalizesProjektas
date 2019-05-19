@@ -48,13 +48,13 @@ namespace AnalizesProjektas.Controllers
                 _context.SaveChanges();
                 return View(shipment);
             }
-            return register(supplier.Shipment.ShipmentId);
+            return register(id);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public bool DataIsValid(Supplier supplier)
         {
-            if (supplier.fkShipmentId != null && supplier.ImonesPavadinimas != "" && supplier.TelefonoNr != "" && supplier.VardasPavarde != "")
+            if ( supplier.ImonesPavadinimas != "" && supplier.TelefonoNr != "" && supplier.VardasPavarde != "")
             {
                 return true;
             }

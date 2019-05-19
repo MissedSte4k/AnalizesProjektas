@@ -13,6 +13,5 @@ namespace AnalizesProjektas.Models
         public string MasinosModelis { get; set; }
         public CarType MasinosTipas { get; set; }
         public CarStatus MasinosBusena { get; set; }
-        public Shipment Shipment { get; set; }
     }
 }

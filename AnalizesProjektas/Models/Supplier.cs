@@ -11,7 +11,6 @@ namespace AnalizesProjektas.Models
         public string ImonesPavadinimas { get; set; }
         public string TelefonoNr { get; set; }
         public string VardasPavarde { get; set; }
-        public Shipment Shipment { get; set; }
 
 
         public Supplier SaveSupplier(int supplierId, string imonesPavadinimas, string telefonoNr, string vardasPavarde, Shipment ShipmentId)
@@ -20,7 +19,6 @@ namespace AnalizesProjektas.Models
             ImonesPavadinimas = imonesPavadinimas;
             TelefonoNr = telefonoNr;
             VardasPavarde = vardasPavarde;
-            Shipment = ShipmentId;
             return this;
         }
     }
