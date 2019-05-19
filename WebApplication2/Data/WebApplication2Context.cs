@@ -13,8 +13,7 @@ namespace WebApplication2.Models
             : base(options)
         {
         }
-
-        public DbSet<WebApplication2.Models.Produkt> Produkt { get; set; }
+        
 
         public DbSet<WebApplication2.Models.Inventory> Inventory { get; set; }
 
