@@ -29,19 +29,24 @@ namespace AnalizesProjektas.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ShipmentId,CreationDate,SupplierLink,Busena")] Shipment shipment)
+        public async Task<IActionResult> Edit(int id, [Bind("Busena")] Shipment shipment)
         {
-            if (id != shipment.ShipmentId)
-            {
-                return NotFound();
-            }
+            var oldShipment = _context.Shipments.Include(x => x.driver).FirstOrDefault(x => x.ShipmentId == id);
 
-            if (ModelState.IsValid)
+            if (oldShipment != null)
             {
                 try
                 {
-                    _context.Update(shipment);
+                    oldShipment.driver.MasinosBusena = (CarStatus)shipment.Busena;
+                    if (oldShipment.driver.MasinosBusena == CarStatus.Atvykus)
+                    {
+                        oldShipment.driver.AtvykimoLaikas = DateTime.Now;
+                    }
+                    if (oldShipment.driver.MasinosBusena == CarStatus.Išvykus)
+                    {
+                        oldShipment.driver.IsvykimoLaikas = DateTime.Now;
+                    }
+                    _context.Update(oldShipment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
