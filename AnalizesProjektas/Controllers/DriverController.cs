@@ -85,6 +85,22 @@ namespace AnalizesProjektas.Controllers
             return View(driver);
         }
 
+        public IActionResult ReggisterDelay(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var shipment = _context.Shipments.Find(id);
+
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+            return View(shipment);
+        }
+
+
         // GET: Driver/Edit/5
         public IActionResult EditDriverForm(int? id)
         {
@@ -150,6 +166,7 @@ namespace AnalizesProjektas.Controllers
 
             return View(shipment);
         }
+        
 
         // POST: Driver/Delete/5
         [HttpPost, ActionName("Delete")]
