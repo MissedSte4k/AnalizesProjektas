@@ -12,6 +12,5 @@ namespace AnalizesProjektas.Models
         public int Amount { get; set; }
         public int Weight { get; set; }
         public ProductType Type { get; set; }
-
     }
 }

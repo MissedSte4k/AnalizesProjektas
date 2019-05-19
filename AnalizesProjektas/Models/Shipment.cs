@@ -21,6 +21,7 @@ namespace AnalizesProjektas.Models
         {
             return gateTime;
         }
+
         public bool checkState()
         {
             if (supplier != null)
@@ -42,14 +43,17 @@ namespace AnalizesProjektas.Models
             }
             return false;
         }
+
         public List<SendingProduct> GetShippmentProducts()
         {
             return Products;
         }
+
         public Supplier getSupplier()
         {
             return supplier;
         }
+
         public void UpdateShipmentDB(Driver driv)
         {
             driver = driv;
