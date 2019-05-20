@@ -9,6 +9,7 @@ namespace WebApplication2.Data
     {
         public bool CheckPassword(string password)
         {
+            if (password == null) return false;
             if (password.Length > 5)
             {
                 return true;

@@ -64,7 +64,7 @@ namespace WebApplication2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(InventoryList));
             }
-            return View(inventory);
+            return View(nameof(InventoryForm),inventory);
         }
 
         // GET: Inventory/Edit/5

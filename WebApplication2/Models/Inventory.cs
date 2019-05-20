@@ -11,10 +11,15 @@ namespace WebApplication2.Models
     {
         public int ID{ get;set;}
         
+        [Required]
         public String name{get;set;}
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int amount{get;set;}
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int weight{get;set;}
 
         public ProductType type { get; set; }

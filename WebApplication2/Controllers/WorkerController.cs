@@ -50,7 +50,7 @@ namespace WebApplication2.Controllers
         {
             return View();
         }
-
+        
         // POST: Worker/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -60,10 +60,19 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
-                Worker temp = new Worker();
-                temp.saveWorker(_context, worker);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(WorkersList));
+                IPasswordCheck passwordCheck = new PasswordCheck();
+                if (passwordCheck.CheckPassword(worker.password) && worker.name != null)
+                {
+                    Worker temp = new Worker();
+                    temp.saveWorker(_context, worker);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(WorkersList));
+                }
+                else
+                {
+                    ViewBag.Name = "*password must be longer than 5 symbols";
+                    return View(nameof(WorkerData), worker);
+                }
             }
             return View(worker);
         }
@@ -119,6 +128,10 @@ namespace WebApplication2.Controllers
                         }
                     }
                     return RedirectToAction(nameof(WorkersList));
+                }
+                else
+                {
+                    ViewBag.Name = "*password must be longer than 5 symbols";
                 }
             }
             return View(worker);
