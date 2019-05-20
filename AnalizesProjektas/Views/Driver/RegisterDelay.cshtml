@@ -1,0 +1,55 @@
+﻿@model AnalizesProjektas.Models.Shipment
+
+@{
+    ViewData["Title"] = "RegisterDelay";
+}
+
+<h2>RegisterDelay</h2>
+
+<h4>Driver</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.driver.MasinosNr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.gateTime.Gate.Vieta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.gateTime.Diena)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.driver.AtvykimoLaikas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.driver.IsvykimoLaikas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.driver.MasinosBusena)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var days in ViewBag.gateTimes)
+        {
+            <tr>
+                <th>
+                    <p>@days.Key.ToString("d")</p>
+                </th>
+                @foreach (GateTime hour in days)
+                {
+                    <td>
+                        <form action="/Driver/RegisterDelay/@Model.ShipmentId" method="post">
+                            <input type="text" name="GateTimeId" style="display: none" value="@hour.GateTimeId">
+                            <button type="submit">PASIRINKTI</button>
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

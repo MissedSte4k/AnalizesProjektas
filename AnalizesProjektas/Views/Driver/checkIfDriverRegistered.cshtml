@@ -78,10 +78,23 @@
             @if (Model.gateTime == null)
             {
                 <a asp-action="EditDriverForm" asp-route-id="@Model.ShipmentId">EditDriver</a>
-                <a asp-action="ReggisterArrival" asp-route-id="@Model.ShipmentId">ReggisterArrival</a>
+                <a asp-action="RegisterArrival" asp-route-id="@Model.ShipmentId">ReggisterArrival</a>
             }
             else
             {
+                <h4>Driver info</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.gateTime.Diena.Date)
+                    </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.gateTime.Diena.TimeOfDay)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.gateTime.Gate.WareHouse.InternalAddress)
+                    </dd>
+                </dl>
                 < a asp - action = "ReggisterDelay" asp - route - id = "@Model.ShipmentId" > ReggisterDelay </ a >
             }
         }

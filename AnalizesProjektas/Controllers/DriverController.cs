@@ -36,7 +36,13 @@ namespace AnalizesProjektas.Controllers
                 return NotFound();
             }
 
-            var shipment = _context.Shipments.Include(x=> x.driver).Include(x => x.supplier).FirstOrDefault(x => x.ShipmentId == id);
+            var shipment = _context.Shipments.Include(x=> x.driver)
+                .Include(x => x.supplier)
+                .Include(x => x.delays)
+                .Include(x => x.gateTime)
+                .Include(x => x.gateTime.Gate)
+                .Include(x => x.gateTime.Gate.WareHouse)
+                .FirstOrDefault(x => x.ShipmentId == id);
             if (shipment == null)
             {
                 var supplier = new Supplier() { ImonesPavadinimas = "kainava", SupplierId = 0, TelefonoNr = "8612312312", VardasPavarde = "Jonas Jonaitis" };
@@ -149,6 +155,58 @@ namespace AnalizesProjektas.Controllers
                 try
                 {
                     oldShipment.gateTime = _context.GateTime.FirstOrDefault(x => x.GateTimeId == gateTimeId);
+                    _context.Update(oldShipment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                }
+            }
+            return RedirectToAction(nameof(RegisterArrival));
+        }
+
+        public IActionResult RegisterDelay(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var shipment = _context.Shipments.Include(x => x.driver).Include(x => x.gateTime).FirstOrDefault(x => x.ShipmentId == id);
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+
+            var gate = _context.Gate.FirstOrDefault(x => x.TransportType.Where(y => y.PriimamoMasinosTipas == shipment.driver.MasinosTipas).Any());
+            ViewBag.gateTimes = _context.GateTime.Where(x => x.Gate.GateId == gate.GateId && !_context.Shipments.Any(y => y.gateTime.GateTimeId == x.GateTimeId)).OrderBy(x => x.Diena).GroupBy(x => x.Diena.Date);
+            return View(shipment);
+        }
+
+        // POST: Arrivals/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> RegisterDelay(int id, int gateTimeId)
+        {
+            var oldShipment = _context.Shipments.Include(x => x.driver).Include(x => x.delays).FirstOrDefault(x => x.ShipmentId == id);
+
+            if (oldShipment != null)
+            {
+                try
+                {
+                    Delay delay = new Delay() { DelayId = id, NaujasAtvykimoLaikas = _context.GateTime.FirstOrDefault(e => e.GateTimeId == gateTimeId) };
+                    if(oldShipment.delays == null)
+                    {
+                        List<Delay> list = new List<Delay>();
+                        list.Add(delay);
+                        oldShipment.delays = list;
+                    }
+                    else
+                    {
+                        oldShipment.delays.Add(delay);
+                    }
+                    
                     _context.Update(oldShipment);
                     await _context.SaveChangesAsync();
                 }

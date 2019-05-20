@@ -21,11 +21,7 @@ namespace AnalizesProjektas.Models
         public DbSet<AnalizesProjektas.Models.Shipment> Shipments { get; set; }
         public DbSet<AnalizesProjektas.Models.SendingProduct> SendingProducts { get; set; }
         public DbSet<AnalizesProjektas.Models.Gate> Gate { get; set; }
-<<<<<<< HEAD
         public DbSet<AnalizesProjektas.Models.GateTime> GateTime  { get; set; }
-=======
-        public DbSet<AnalizesProjektas.Models.GateTime> GateTime { get; set; }
->>>>>>> d87f70c8c763d22d07270e2b8e45e9cd1cf021ca
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
