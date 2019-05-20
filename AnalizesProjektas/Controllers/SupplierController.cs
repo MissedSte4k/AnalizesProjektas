@@ -18,22 +18,26 @@ namespace AnalizesProjektas.Controllers
             _context = context;
         }
 
-        public IActionResult register(int? id)
+        public IActionResult register(int id)
         {
-                if (id == null)
+                if (id == 0)
                 {
                     return NotFound();
                 }
-
-            var shipment = _context.Shipments.Include(x => x.supplier).Include(x => x.Products).FirstOrDefault(x => x.ShipmentId == id);
-            if (shipment == null)
+            bool ship =_context.Shipments.Any(x => x.ShipmentId == id);
+            Shipment shipment; 
+            if (!ship)
             {
                 SendingProduct product = new SendingProduct() { Amount = 2, Name = "am", SendingProductId = 0, Type = ProductType.ProdA, Weight = 15 };
                 List<SendingProduct> prod = new List<SendingProduct>();
                 prod.Add(product);
-                shipment = new Shipment() { ShipmentId = 0, CreationDate = DateTime.Now, SupplierLink = "sss", Busena = ShipmentStatus.PendingApproval, supplier = null, delays = null, gateTime = null, driver = null, Products = prod };
+                shipment = new Shipment() { ShipmentId = id, CreationDate = DateTime.Now, SupplierLink = "sss", Busena = ShipmentStatus.PendingApproval, supplier = null, delays = null, gateTime = null, driver = null, Products = prod };
                 _context.Shipments.Add(shipment);
                 _context.SaveChanges();
+            }
+            else
+            {
+                shipment = _context.Shipments.Include(x => x.supplier).Include(x => x.Products).FirstOrDefault(x => x.ShipmentId == id);
             }
             if (shipment == null)
                 {

@@ -11,7 +11,6 @@ namespace AnalizesProjektas.Models
         public int ShipmentId { get; set; }
         public DateTime CreationDate { get; set; }
         public string SupplierLink { get; set; }
-        public string CarrierLink { get; set; }
         public ShipmentStatus Busena { get; set; }
         public Supplier supplier { get; set; }
         public List<Delay> delays { get; set; }
