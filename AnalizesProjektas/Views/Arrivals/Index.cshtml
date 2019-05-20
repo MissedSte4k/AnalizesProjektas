@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Atvykstančios transporto priemonės</h2>
+<h2>Arriving transport</h2>
 
 <table class="table">
     <thead>
@@ -52,7 +52,7 @@
                 {
                 <form action="/Arrivals/Edit/@item.ShipmentId" method="post">
                     <input type="text" name="busena" style="display: none" value="1">
-                    <button type="submit">ATVYKO</button>
+                    <button type="submit">ARRIVED</button>
                 </form>
                 }
                 else
@@ -65,7 +65,7 @@
                 {
                     <form action="/Arrivals/Edit/@item.ShipmentId" method="post">
                         <input type="text" name="busena" style="display: none" value="2">
-                        <button type="submit">IŠVYKO</button>
+                        <button type="submit">LEFT</button>
                     </form>
                 }
                 else

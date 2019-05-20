@@ -8,14 +8,23 @@ namespace AnalizesProjektas.Models
 {
     public class Shipment
     {
+        [Display(Name = "Shipment #")]
         public int ShipmentId { get; set; }
+        [Display(Name = "Creation date")]
         public DateTime CreationDate { get; set; }
+        [Display(Name = "Supplier link")]
         public string SupplierLink { get; set; }
+        [Display(Name = "Shipment Status")]
         public ShipmentStatus Busena { get; set; }
+        [Display(Name = "Supplier")]
         public Supplier supplier { get; set; }
+        [Display(Name = "Delays")]
         public List<Delay> delays { get; set; }
+        [Display(Name = "Arrival Time")]
         public GateTime gateTime { get; set; }
+        [Display(Name = "Driver")]
         public Driver driver { get; set; }
+        [Display(Name = "Products")]
         public List<SendingProduct> Products { get; set; }
 
         public GateTime getArrival()

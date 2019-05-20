@@ -38,11 +38,11 @@ namespace AnalizesProjektas.Controllers
                 try
                 {
                     oldShipment.driver.MasinosBusena = (CarStatus)shipment.Busena;
-                    if (oldShipment.driver.MasinosBusena == CarStatus.Atvykus)
+                    if (oldShipment.driver.MasinosBusena == CarStatus.Arrived)
                     {
                         oldShipment.driver.AtvykimoLaikas = DateTime.Now;
                     }
-                    if (oldShipment.driver.MasinosBusena == CarStatus.Išvykus)
+                    if (oldShipment.driver.MasinosBusena == CarStatus.Left)
                     {
                         oldShipment.driver.IsvykimoLaikas = DateTime.Now;
                     }

@@ -81,7 +81,7 @@ namespace AnalizesProjektas.Controllers
         {
             if (ModelState.IsValid)
             {
-                driver.MasinosBusena = CarStatus.Išvykus;
+                driver.MasinosBusena = CarStatus.Left;
                 var shipment = _context.Shipments.Find(ShipmentId);
                 shipment.driver = driver;
                 shipment.Busena = ShipmentStatus.CarrierApproved;
@@ -136,9 +136,9 @@ namespace AnalizesProjektas.Controllers
             {
                 return NotFound();
             }
-
-            var gate = _context.Gate.FirstOrDefault(x => x.TransportType.Where(y => y.PriimamoMasinosTipas == shipment.driver.MasinosTipas).Any());
-            ViewBag.gateTimes = _context.GateTime.Where(x => x.Gate.GateId == gate.GateId && !_context.Shipments.Any(y => y.gateTime.GateTimeId == x.GateTimeId)).OrderBy(x => x.Diena).GroupBy(x => x.Diena.Date);
+            
+            var gate = _context.Gate.FirstOrDefault(x => x.TransportType.Where(y => y.PriimamoMasinosTipas == shipment.driver.MasinosTipas).Any() && _context.GateTime.Any(y => x.GateId == y.Gate.GateId));
+            ViewBag.gateTimes = _context.GateTime.Where(x => x.Gate.GateId == gate.GateId).OrderBy(x => x.Diena).GroupBy(x => x.Diena.Date);
             return View(shipment);
         }
 
@@ -155,6 +155,7 @@ namespace AnalizesProjektas.Controllers
                 try
                 {
                     oldShipment.gateTime = _context.GateTime.FirstOrDefault(x => x.GateTimeId == gateTimeId);
+                    oldShipment.gateTime.IsUsed = true;
                     _context.Update(oldShipment);
                     await _context.SaveChangesAsync();
                 }

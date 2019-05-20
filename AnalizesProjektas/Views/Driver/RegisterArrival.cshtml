@@ -4,32 +4,44 @@
     ViewData["Title"] = "EditDriverForm";
 }
 
-<h2>EditDriverForm</h2>
+<h2>Arrival selection</h2>
 
-<h4>Driver</h4>
+<h4>Gate</h4>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.driver.MasinosNr)   
+                <p>Date<p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ShipmentId)
+                <p>8:00 - 9:00<p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.gateTime.Gate.Vieta)
+                <p>9:00 - 10:00<p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.gateTime.Diena)
+                <p>10:00 - 11:00<p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.driver.AtvykimoLaikas)
+                <p>11:00 - 12:00<p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.driver.IsvykimoLaikas)
+                <p>12:00 - 13:00<p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.driver.MasinosBusena)
+                <p>13:00 - 14:00<p>
+            </th>
+            <th>
+                <p>14:00 - 15:00<p>
+            </th>
+            <th>
+                <p>15:00 - 16:00<p>
+            </th>
+            <th>
+                <p>16:00 - 17:00<p>
+            </th>
+            <th>
+                <p>17:00 - 18:00<p>
             </th>
         </tr>
     </thead>
@@ -41,10 +53,17 @@
             </th>
             @foreach (GateTime hour in days) {
             <td>
-                <form action="/Driver/RegisterArrival/@Model.ShipmentId" method="post">
-                    <input type="text" name="GateTimeId" style="display: none" value="@hour.GateTimeId">
-                    <button type="submit">PASIRINKTI</button>
-                </form>
+                @if (hour.IsUsed != null && hour.IsUsed == true)
+                {
+                    <p>-</p>
+                }
+                else
+                {
+                    <form action="/Driver/RegisterArrival/@Model.ShipmentId" method="post">
+                        <input type="text" name="GateTimeId" style="display: none" value="@hour.GateTimeId">
+                        <button type="submit">SELECT</button>
+                    </form>
+                }
             </td>
             }
         </tr>
