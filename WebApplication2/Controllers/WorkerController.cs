@@ -14,6 +14,7 @@ namespace WebApplication2.Controllers
     {
         private readonly WebApplication2Context _context;
 
+        IPasswordCheck passwordCheck = new PasswordCheck();
         public WorkerController(WebApplication2Context context)
         {
             _context = context;
@@ -60,7 +61,6 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
-                IPasswordCheck passwordCheck = new PasswordCheck();
                 if (passwordCheck.CheckPassword(worker.password) && worker.name != null)
                 {
                     Worker temp = new Worker();
@@ -107,7 +107,6 @@ namespace WebApplication2.Controllers
 
             if (ModelState.IsValid)
             {
-                IPasswordCheck passwordCheck = new PasswordCheck();
                 if (passwordCheck.CheckPassword(worker.password))
                 {
                     try
